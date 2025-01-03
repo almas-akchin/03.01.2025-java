@@ -1,0 +1,38 @@
+public class Solution {
+    public int waysToSplitArray(int[] nums) {
+        int n = nums.length;
+
+        // Step 1: Compute prefix sums
+        long[] prefixSum = new long[n];
+        prefixSum[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + nums[i];
+        }
+
+        // Step 2: Compute the total sum
+        long totalSum = prefixSum[n - 1];
+
+        // Step 3: Count valid splits
+        int validCount = 0;
+        for (int i = 0; i < n - 1; i++) { // Stop at n-2 to ensure at least one element on the right
+            long leftSum = prefixSum[i];
+            long rightSum = totalSum - leftSum;
+            if (leftSum >= rightSum) {
+                validCount++;
+            }
+        }
+
+        return validCount;
+    }
+
+    // Main method for testing
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        int[] nums1 = {10, 4, -8, 7};
+        int[] nums2 = {2, 3, 1, 0};
+
+        System.out.println(solution.waysToSplitArray(nums1)); // Output: 2
+        System.out.println(solution.waysToSplitArray(nums2)); // Output: 2
+    }
+}
